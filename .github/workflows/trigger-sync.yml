@@ -1,0 +1,19 @@
+name: Trigger Sync Action in Destination Repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Repository Dispatch Event
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/fernandoeeu-g4/frontend-recipes/dispatches \
+            -d '{"event_type": "sync-recipes"}'
